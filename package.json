@@ -1,0 +1,15 @@
+{
+  "name": "thermocontrol",
+  "version": "0.0.1",
+  "description": "Controller for arduino thermostat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Peter Johnson",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "express": "^4.13.4",
+    "serialport": "^3.1.2"
+  }
+}
