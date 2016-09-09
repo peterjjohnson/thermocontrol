@@ -1,5 +1,16 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {render} from 'react-dom';
 import THData from './thdata.jsx';
 
-render(<THData/>, document.getElementById('thermocontrol'));
+class Main extends Component {
+    render() {
+        return (
+            <div>
+                <h1>ThermoControl</h1>
+                <THData pollInterval={2000}/>
+            </div>
+        );
+    }
+}
+
+render(<Main/>, document.getElementById('thermocontrol'));
