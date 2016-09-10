@@ -1,21 +1,21 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import $ from 'jquery';
 
 export default class THData extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {Temp: 'loading...', Humidity: 'loading...'};
-        THData.context = this;
+        this.fetchTempInfo = this.fetchTempInfo.bind(this);
     }
 
     render() {
+        const {tempInfo} = this.props;
         return (
             <div>
                 <h2>Temperature:</h2>
-                <div id="temperature">{THData.context.state.Temp}ºC</div>
+                <div id="temperature">{tempInfo.Temp}ºC</div>
                 <h2>Humidity:</h2>
-                <div id="humidity">{THData.context.state.Humidity}%</div>
+                <div id="humidity">{tempInfo.Humidity}%</div>
             </div>
         );
     }
@@ -25,7 +25,7 @@ export default class THData extends Component {
             url: '/getinfo',
             dataType: 'json',
             success: (tempInfo) => {
-                THData.context.setState(tempInfo);
+                this.props.store.dispatch({type: 'UPDATE_INFO', tempInfo: tempInfo});
             },
             error: (err) => {
                 console.log(err);
