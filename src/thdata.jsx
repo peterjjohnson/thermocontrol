@@ -1,11 +1,14 @@
 import React, {Component, PropTypes} from 'react';
-import $ from 'jquery';
+import io from 'socket.io-client';
+const socket = io('http://localhost:3000');
 
 export default class THData extends Component {
 
     constructor(props) {
         super(props);
-        this.fetchTempInfo = this.fetchTempInfo.bind(this);
+        this.incrementTemp = this.incrementTemp.bind(this);
+        this.decrementTemp = this.decrementTemp.bind(this);
+        socket.on('temp_data', this.props.onGetInfo);
     }
 
     render() {
@@ -16,25 +19,21 @@ export default class THData extends Component {
                 <div id="temperature">{tempInfo.Temp}ºC</div>
                 <h2>Humidity:</h2>
                 <div id="humidity">{tempInfo.Humidity}%</div>
+                <h2>Hold Temperature:</h2>
+                <div id="hold-temp">{tempInfo.HoldTemp}ºC</div>
+                <button onClick={this.incrementTemp}>+</button>
+                <button onClick={this.decrementTemp}>-</button>
+                <h2>Furnace State:</h2>
+                <div id="furnace-state">{tempInfo.Furnace}</div>
             </div>
         );
     }
 
-    fetchTempInfo() {
-        $.ajax({
-            url: '/getinfo',
-            dataType: 'json',
-            success: (tempInfo) => {
-                this.props.store.dispatch({type: 'UPDATE_INFO', tempInfo: tempInfo});
-            },
-            error: (err) => {
-                console.log(err);
-            }
-        });
+    incrementTemp() {
+        socket.emit('incrementTemp');
     }
 
-    componentDidMount() {
-        this.fetchTempInfo();
-        setInterval(this.fetchTempInfo, this.props.pollInterval);
+    decrementTemp() {
+        socket.emit('decrementTemp');
     }
 }

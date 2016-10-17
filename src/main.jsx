@@ -3,11 +3,25 @@ import ReactDOM from 'react-dom';
 import THData from './thdata.jsx';
 import {createStore} from 'redux';
 
-const tempInfoStore = (state = {Temp: 'Initializing', Humidity: 'Initializing'}, action) => {
+let modifiedTemp = false;
+
+const tempInfoStore = (state = {}, action) => {
     switch (action.type) {
         case 'UPDATE_INFO':
+            if (action.tempInfo.HoldTemp != state.HoldTemp && modifiedTemp) {
+                action.tempInfo.HoldTemp = state.HoldTemp;
+            } else if (action.tempInfo.HoldTemp == state.HoldTemp && modifiedTemp) {
+                modifiedTemp = false;
+            }
             return action.tempInfo
-            break;
+        case 'INCREASE_TEMP':
+            state.HoldTemp = action.tempInfo.HoldTemp;
+            modifiedTemp = true;
+            return state;
+        case 'DECREASE_TEMP':
+            state.HoldTemp = action.tempInfo.HoldTemp;
+            modifiedTemp = true;
+            return state;
         default:
             return state;
     }
@@ -20,7 +34,12 @@ class Main extends Component {
         return (
             <div>
                 <h1>ThermoControl</h1>
-                <THData tempInfo={store.getState()} store={store} pollInterval={2000}/>
+                <THData
+                    tempInfo={store.getState()}
+                    onGetInfo={(tempInfo) => store.dispatch({ type: 'UPDATE_INFO', tempInfo: tempInfo })}
+                    onIncreaseTemp={(tempInfo) => store.dispatch({ type: 'INCREASE_TEMP', tempInfo: tempInfo })}
+                    onDecreaseTemp={(tempInfo) => store.dispatch({ type: 'DECREASE_TEMP', tempINfo: tempInfo })}
+                />
             </div>
         );
     }
