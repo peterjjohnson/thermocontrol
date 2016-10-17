@@ -3,31 +3,22 @@ import ReactDOM from 'react-dom';
 import THData from './thdata.jsx';
 import {createStore} from 'redux';
 
-let modifiedTemp = false;
-
 const tempInfoStore = (state = {}, action) => {
     switch (action.type) {
         case 'UPDATE_INFO':
-            if (action.tempInfo.HoldTemp != state.HoldTemp && modifiedTemp) {
-                action.tempInfo.HoldTemp = state.HoldTemp;
-            } else if (action.tempInfo.HoldTemp == state.HoldTemp && modifiedTemp) {
-                modifiedTemp = false;
-            }
             return action.tempInfo
         case 'INCREASE_TEMP':
-            state.HoldTemp = action.tempInfo.HoldTemp;
-            modifiedTemp = true;
+            state.HoldTemp += 0.5;
             return state;
         case 'DECREASE_TEMP':
-            state.HoldTemp = action.tempInfo.HoldTemp;
-            modifiedTemp = true;
+            state.HoldTemp -= 0.5;
             return state;
         default:
             return state;
     }
 }
 
-let store = createStore(tempInfoStore);
+const store = createStore(tempInfoStore);
 
 class Main extends Component {
     render() {
@@ -37,8 +28,8 @@ class Main extends Component {
                 <THData
                     tempInfo={store.getState()}
                     onGetInfo={(tempInfo) => store.dispatch({ type: 'UPDATE_INFO', tempInfo: tempInfo })}
-                    onIncreaseTemp={(tempInfo) => store.dispatch({ type: 'INCREASE_TEMP', tempInfo: tempInfo })}
-                    onDecreaseTemp={(tempInfo) => store.dispatch({ type: 'DECREASE_TEMP', tempINfo: tempInfo })}
+                    onIncreaseTemp={() => store.dispatch({ type: 'INCREASE_TEMP' })}
+                    onDecreaseTemp={() => store.dispatch({ type: 'DECREASE_TEMP' })}
                 />
             </div>
         );

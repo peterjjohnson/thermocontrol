@@ -4,13 +4,16 @@ const socket = io('http://localhost:3000');
 
 export default class THData extends Component {
 
+    // Start up
     constructor(props) {
         super(props);
-        this.incrementTemp = this.incrementTemp.bind(this);
         this.decrementTemp = this.decrementTemp.bind(this);
+        this.incrementTemp = this.incrementTemp.bind(this);
+        // Create a listener for temp_data events
         socket.on('temp_data', this.props.onGetInfo);
     }
 
+    // Render the component
     render() {
         const {tempInfo} = this.props;
         return (
@@ -29,11 +32,15 @@ export default class THData extends Component {
         );
     }
 
+    // Emit incrementTemp event
     incrementTemp() {
         socket.emit('incrementTemp');
+        this.props.onIncreaseTemp();
     }
 
+    // Emit decrementTemp event
     decrementTemp() {
         socket.emit('decrementTemp');
+        this.props.onDecreaseTemp();
     }
 }

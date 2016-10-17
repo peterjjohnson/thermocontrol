@@ -20,7 +20,9 @@ app.get('/', (req, res) => {
     res.sendFile('index.html');
 });
 
+// Connect socket.io
 io.on('connection', socket => {
+    // When we recieve JSON data from the thermostat, emit it to connected clients
     port.on('data', data => {
         try {
             socket.emit( 'temp_data', JSON.parse( data ) );
@@ -29,10 +31,12 @@ io.on('connection', socket => {
         }
     });
 
+    // incrementTemp event - send command to thermostat to increase hold temperature
     socket.on('incrementTemp', () => {
         port.write('upHold\0');
     });
 
+    // decrementTemp event - send command to thermostat to decrease hold temperature
     socket.on('decrementTemp', () => {
         port.write('downHold\0');
     });
