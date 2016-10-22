@@ -32,13 +32,8 @@ io.on('connection', socket => {
     });
 
     // incrementTemp event - send command to thermostat to increase hold temperature
-    socket.on('incrementTemp', () => {
-        port.write('upHold\0');
-    });
-
-    // decrementTemp event - send command to thermostat to decrease hold temperature
-    socket.on('decrementTemp', () => {
-        port.write('downHold\0');
+    socket.on('setTemp', temp => {
+        port.write(';setTemp:' + temp);
     });
 });
 

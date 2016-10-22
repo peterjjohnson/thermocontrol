@@ -7,11 +7,8 @@ const tempInfoStore = (state = {}, action) => {
     switch (action.type) {
         case 'UPDATE_INFO':
             return action.tempInfo
-        case 'INCREASE_TEMP':
-            state.HoldTemp += 0.5;
-            return state;
-        case 'DECREASE_TEMP':
-            state.HoldTemp -= 0.5;
+        case 'SET_TEMP':
+            state.HoldTemp = action.temp;
             return state;
         default:
             return state;
@@ -27,9 +24,8 @@ class Main extends Component {
                 <h1>ThermoControl</h1>
                 <THData
                     tempInfo={store.getState()}
-                    onGetInfo={(tempInfo) => store.dispatch({ type: 'UPDATE_INFO', tempInfo: tempInfo })}
-                    onIncreaseTemp={() => store.dispatch({ type: 'INCREASE_TEMP' })}
-                    onDecreaseTemp={() => store.dispatch({ type: 'DECREASE_TEMP' })}
+                    onGetInfo={tempInfo => store.dispatch({ type: 'UPDATE_INFO', tempInfo: tempInfo })}
+                    onSetTemp={temp => store.dispatch({ type: 'SET_TEMP', temp: temp })}
                 />
             </div>
         );
