@@ -1,13 +1,23 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import THData from './thdata.jsx';
+import Temp from './temp.jsx';
+import Humidity from './humidity.jsx';
+import HoldTemp from './holdtemp.jsx';
+import Furnace from './furnace.jsx';
+import io from 'socket.io-client';
 import {createStore} from 'redux';
+
+const socket = io('http://localhost:3000');
 
 const tempInfoStore = (state = {}, action) => {
     switch (action.type) {
         case 'UPDATE_INFO':
+            // We've got updated temp info
             return action.tempInfo
         case 'SET_TEMP':
+            // Send the new temp to the server
+            socket.emit('setTemp', action.temp);
+            // Update the current hold temp to reflect what we just submitted
             state.HoldTemp = action.temp;
             return state;
         default:
@@ -18,15 +28,24 @@ const tempInfoStore = (state = {}, action) => {
 const store = createStore(tempInfoStore);
 
 class Main extends Component {
+    constructor(props) {
+        super(props);
+        // Create a listener for temp_data events from the server
+        socket.on('temp_data', tempInfo => store.dispatch({ type: 'UPDATE_INFO', tempInfo: tempInfo }));
+    }
     render() {
+        const tempInfo = store.getState();
         return (
             <div>
-                <h1>ThermoControl</h1>
-                <THData
-                    tempInfo={store.getState()}
-                    onGetInfo={tempInfo => store.dispatch({ type: 'UPDATE_INFO', tempInfo: tempInfo })}
-                    onSetTemp={temp => store.dispatch({ type: 'SET_TEMP', temp: temp })}
-                />
+                <Temp
+                    Temp = {tempInfo.Temp} />
+                <Humidity
+                    Humidity = {tempInfo.Humidity} />
+                <HoldTemp
+                    HoldTemp = {tempInfo.HoldTemp}
+                    onSetTemp = {temp => store.dispatch({ type: 'SET_TEMP', temp: temp })} />
+                <Furnace
+                    Furnace = {tempInfo.Furnace} />
             </div>
         );
     }
@@ -34,7 +53,7 @@ class Main extends Component {
 
 function render() {
     ReactDOM.render(
-        <Main/>,
+        <Main />,
         document.getElementById('thermocontrol')
     );
 }
