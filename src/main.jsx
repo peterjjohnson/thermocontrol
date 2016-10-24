@@ -7,8 +7,10 @@ import Furnace from './furnace.jsx';
 import io from 'socket.io-client';
 import {createStore} from 'redux';
 
+// Connect to the server so we can send/receive data
 const socket = io('http://localhost:3000');
 
+// Handle actions on the store
 const tempInfoStore = (state = {}, action) => {
     switch (action.type) {
         case 'UPDATE_INFO':
@@ -27,12 +29,16 @@ const tempInfoStore = (state = {}, action) => {
 
 const store = createStore(tempInfoStore);
 
+// The Main component
 class Main extends Component {
+    // Start things off
     constructor(props) {
         super(props);
         // Create a listener for temp_data events from the server
         socket.on('temp_data', tempInfo => store.dispatch({ type: 'UPDATE_INFO', tempInfo: tempInfo }));
     }
+
+    // Render the component and all sub components
     render() {
         const tempInfo = store.getState();
         return (
@@ -51,6 +57,7 @@ class Main extends Component {
     }
 }
 
+// Render everything into the specified element in the page
 function render() {
     ReactDOM.render(
         <Main />,
@@ -59,4 +66,6 @@ function render() {
 }
 
 render();
+
+// Subscribe our render method to the store so that we can display changes
 store.subscribe(render);

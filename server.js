@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
 // Connect socket.io
 io.on('connection', socket => {
-    // When we recieve JSON data from the thermostat, emit it to connected clients
+    // When we receive JSON data from the thermostat, emit it to connected clients
     port.on('data', data => {
         try {
             socket.emit( 'temp_data', JSON.parse( data ) );
@@ -37,6 +37,7 @@ io.on('connection', socket => {
     });
 });
 
+// Start up the server
 server.listen(3000, () => {
     console.log('ThermoControl listening on port 3000!');
 });
