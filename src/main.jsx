@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import Temp from './temp.jsx';
-import Humidity from './humidity.jsx';
-import HoldTemp from './holdtemp.jsx';
-import Furnace from './furnace.jsx';
+import Temp from './components/temp.jsx';
+import Humidity from './components/humidity.jsx';
+import HoldTemp from './components/holdtemp.jsx';
+import Furnace from './components/furnace.jsx';
 import io from 'socket.io-client';
 import {createStore} from 'redux';
+require('./style.css');
 
 // Connect to the server so we can send/receive data
 const socket = io('http://localhost:3000');
@@ -45,13 +46,13 @@ class Main extends Component {
             <div>
                 <Temp
                     Temp = {tempInfo.Temp} />
+                <Furnace
+                    Furnace = {tempInfo.Furnace} />
                 <Humidity
                     Humidity = {tempInfo.Humidity} />
                 <HoldTemp
                     HoldTemp = {tempInfo.HoldTemp}
                     onSetTemp = {temp => store.dispatch({ type: 'SET_TEMP', temp: temp })} />
-                <Furnace
-                    Furnace = {tempInfo.Furnace} />
             </div>
         );
     }
