@@ -4,18 +4,25 @@ import Temp from './components/temp.jsx';
 import Humidity from './components/humidity.jsx';
 import HoldTemp from './components/holdtemp.jsx';
 import Furnace from './components/furnace.jsx';
+import TempSlider from './components/tempslider.jsx';
 import io from 'socket.io-client';
 import {createStore} from 'redux';
 require('./style.css');
 
 // Connect to the server so we can send/receive data
-const socket = io('http://localhost:3000');
+const socket = io('http://192.168.1.100:3000');
+
+const prettyround = (x) => {
+    return Math.round(x * 4) / 4;
+}
 
 // Handle actions on the store
 const tempInfoStore = (state = {}, action) => {
     switch (action.type) {
         case 'UPDATE_INFO':
             // We've got updated temp info
+            action.tempInfo.Temp = prettyround(action.tempInfo.Temp).toFixed(1);
+            action.tempInfo.Humidity = prettyround(action.tempInfo.Humidity).toFixed(1);
             return action.tempInfo
         case 'SET_TEMP':
             // Send the new temp to the server
@@ -44,15 +51,13 @@ class Main extends Component {
         const tempInfo = store.getState();
         return (
             <div>
-                <Temp
-                    Temp = {tempInfo.Temp} />
-                <Furnace
-                    Furnace = {tempInfo.Furnace} />
-                <Humidity
-                    Humidity = {tempInfo.Humidity} />
-                <HoldTemp
-                    HoldTemp = {tempInfo.HoldTemp}
-                    onSetTemp = {temp => store.dispatch({ type: 'SET_TEMP', temp: temp })} />
+                <Temp Temp = {tempInfo.Temp} />
+                <div id="right-panel">
+                    <Furnace Furnace = {tempInfo.Furnace} />
+                    <Humidity Humidity = {tempInfo.Humidity} />
+                    <HoldTemp HoldTemp = {tempInfo.HoldTemp} />
+                </div>
+                <TempSlider onSetTemp = {temp => store.dispatch({ type: 'SET_TEMP', temp: temp })} />
             </div>
         );
     }
