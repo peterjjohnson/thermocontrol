@@ -57,7 +57,7 @@ class Main extends Component {
                     <Humidity Humidity = {tempInfo.Humidity} />
                     <HoldTemp HoldTemp = {tempInfo.HoldTemp} />
                 </div>
-                <TempSlider onSetTemp = {temp => store.dispatch({ type: 'SET_TEMP', temp: temp })} />
+                <TempSlider HoldTemp = {tempInfo.HoldTemp} onSetTemp = {temp => store.dispatch({ type: 'SET_TEMP', temp: temp })} />
             </div>
         );
     }
