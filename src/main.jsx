@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Temp from './components/temp.jsx';
 import Humidity from './components/humidity.jsx';
 import HoldTemp from './components/holdtemp.jsx';
-import Furnace from './components/furnace.jsx';
 import TempSlider from './components/tempslider.jsx';
 import io from 'socket.io-client';
 import {createStore} from 'redux';
@@ -53,9 +52,8 @@ class Main extends Component {
             <div>
                 <Temp Temp = {tempInfo.Temp} />
                 <div id="right-panel">
-                    <Furnace Furnace = {tempInfo.Furnace} />
                     <Humidity Humidity = {tempInfo.Humidity} />
-                    <HoldTemp HoldTemp = {tempInfo.HoldTemp} />
+                    <HoldTemp HoldTemp = {tempInfo.HoldTemp} Furnace = {tempInfo.Furnace} />
                 </div>
                 <TempSlider HoldTemp = {tempInfo.HoldTemp} onSetTemp = {temp => store.dispatch({ type: 'SET_TEMP', temp: temp })} />
             </div>

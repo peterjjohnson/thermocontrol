@@ -13,16 +13,35 @@ body {
 }
 
 #temperature {
-    font-size: 23vw;
+    font-size: 20vw;
+}
+
+#right-panel {
+    margin-top: 7vw;
 }
 
 #temp-slider {
     clear: both;
 }
 
+#furnace, #humidity-icon {
+    width: 7vw;
+    margin-right: 2vw;
+    vertical-align: bottom;
+}
+
+#furnace {
+    float: left;
+    display: block;
+}
+
+#hold-temp{
+    margin-top: 2vw;
+}
+
 input[type=range] {
     -webkit-appearance: none;
-    margin: 20vh 0;
+    margin: 10vh 0 0 0;
     width: 100%;
 }
 input[type=range]:focus {
@@ -30,7 +49,7 @@ input[type=range]:focus {
 }
 input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 2vw;
+    height: 12vh;
     cursor: pointer;
     animate: 0.2s;
     box-shadow: 1px 1px 5px 2px #000000 inset;
@@ -40,21 +59,21 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 input[type=range]::-webkit-slider-thumb {
     box-shadow: 1px 1px 5px 2px #000000;
-    border: 1px solid #000000;
-    height: 6vw;
-    width: 18vw;
-    border-radius: 3vw;
-    background: #ffffff;
+    border: 3px solid #666666;
+    height: 16vh;
+    width: 12vh;
+    border-radius: 5%;
+    background-color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top: -2vw;
+    margin-top: -2vh;
 }
-input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #367ebd;
+input[type=range]::-webkit-slider-thumb:active {
+    box-shadow: 2px 2px 20px 8px #000000;
 }
 input[type=range]::-moz-range-track {
     width: 100%;
-    height: 2vw;
+    height: 12vh;
     cursor: pointer;
     animate: 0.2s;
     box-shadow: 1px 1px 5px 2px #000000 inset;
@@ -64,10 +83,13 @@ input[type=range]::-moz-range-track {
 }
 input[type=range]::-moz-range-thumb {
     box-shadow: 1px 1px 5px 2px #000000;
-    border: 1px solid #000000;
-    height: 6vw;
-    width: 18vw;
-    border-radius: 3vw;
-    background: #ffffff;
+    border: 3px solid #666666;
+    height: 16vh;
+    width: 12vh;
+    border-radius: 5%;
+    background-color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
+}
+input[type=range]::-moz-range-thumb:active {
+    box-shadow: 2px 2px 20px 8px #000000;
 }

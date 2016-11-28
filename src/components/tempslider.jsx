@@ -8,10 +8,10 @@ export default class TempSlider extends Component {
                     id = "set-temp"
                     type = "range"
                     value = {this.props.HoldTemp}
-                    min = "10"
-                    max="30"
+                    min = "15"
+                    max="25"
                     step="0.5"
-                    onChange = { event => { this.props.onSetTemp(event.target.value) } } />
+                    onInput = { event => { this.props.onSetTemp(event.target.value) } } />
             </div>
         );
     }
