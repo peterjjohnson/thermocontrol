@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 const serialport = require('serialport'),
     SerialPort = serialport.SerialPort,

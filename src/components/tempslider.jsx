@@ -11,7 +11,7 @@ export default class TempSlider extends Component {
                     min = "15"
                     max="25"
                     step="0.5"
-                    onInput = { event => { this.props.onSetTemp(event.target.value) } } />
+                    onInput = {event => {this.props.onSetTemp(event.target.value)}} />
             </div>
         );
     }
