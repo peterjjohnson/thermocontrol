@@ -11,12 +11,14 @@ app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/public/index.html`)
 })
 
+let init = true
+
 try {
     const SerialPort = require('serialport'),
         Readline = SerialPort.parsers.Readline,
         port = new SerialPort('/dev/ttyUSB0'),// iMac: '/dev/tty.usbserial-DN00OO8D'),
         parser = port.pipe(new Readline())
-    let last_req, sending = false, init = true
+    let last_req, sending = false
 
     // Set the hold temperature
     const setTemp = temp => {
@@ -51,7 +53,6 @@ try {
         socket.on('setTemp', setTemp)
     })
 
-    init = false
 } catch (err) {
     console.log('Unable to connect to thermostat!')
     console.error(err)
@@ -60,4 +61,5 @@ try {
 // Start up the server
 server.listen(broadcastPort, () => {
     console.log(`ThermoControl listening on port ${broadcastPort}!`)
+    setTimeout(() => {init = false}, 1000)
 })
