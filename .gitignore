@@ -30,3 +30,6 @@ node_modules
 # Project stuff
 .idea
 public/build
+
+# Don't have permission to redistribute the fonts
+src/fonts
