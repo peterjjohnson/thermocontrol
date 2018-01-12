@@ -4,7 +4,7 @@ const express = require('express'),
     io = require('socket.io')(server),
     broadcastPort = process.env.PORT || 3000
 
-app.use(express.static('public'))
+app.use(express.static(`${__dirname}/public`))
 
 // Front page of the app
 app.get('/', (req, res) => {
