@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 try {
     const SerialPort = require('serialport'),
         Readline = SerialPort.parsers.Readline,
-        port = new SerialPort('/dev/tty.usbserial-DN00OO8D'),
+        port = new SerialPort('/dev/ttyUSB0'),// iMac: '/dev/tty.usbserial-DN00OO8D'),
         parser = port.pipe(new Readline())
     let last_req, sending = false
 
