@@ -9,7 +9,7 @@ import {createStore} from 'redux';
 require('./style.css');
 
 // Connect to the server so we can send/receive data
-const socket = io('http://192.168.1.100:3000');
+const socket = io('http://192.168.1.110');
 
 const prettyround = (x) => {
     return Math.round(x * 4) / 4;
