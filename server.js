@@ -16,7 +16,7 @@ try {
         Readline = SerialPort.parsers.Readline,
         port = new SerialPort('/dev/ttyUSB0'),// iMac: '/dev/tty.usbserial-DN00OO8D'),
         parser = port.pipe(new Readline())
-    let last_req, sending = false
+    let last_req, sending = false, init = true
 
     // Set the hold temperature
     const setTemp = temp => {
@@ -39,7 +39,7 @@ try {
         parser.on('data', data => {
             if (data) {
                 try {
-                    if (data == 'Unrecognized request') setTemp(last_req)
+                    if (data == 'Unrecognized request' && !init) setTemp(last_req)
                     else socket.emit('temp_data', JSON.parse(data))
                 } catch (err) {
                     console.log(err)
@@ -50,6 +50,8 @@ try {
         // incrementTemp event - send command to thermostat to increase hold temperature
         socket.on('setTemp', setTemp)
     })
+
+    init = false
 } catch (err) {
     console.log('Unable to connect to thermostat!')
     console.error(err)
