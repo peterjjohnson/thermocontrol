@@ -6,7 +6,6 @@ import HoldTemp from './components/holdtemp.jsx';
 import TempSlider from './components/tempslider.jsx';
 import io from 'socket.io-client';
 import {createStore} from 'redux';
-require('./style.css');
 
 // Connect to the server so we can send/receive data
 const socket = io('http://192.168.1.110');
