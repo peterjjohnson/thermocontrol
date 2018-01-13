@@ -8,7 +8,7 @@ export default class HoldTemp extends Component {
                 <div id="furnace">
                     {furnaceState}
                 </div>
-                {this.props.HoldTemp}ºC
+                {this.props.HoldTemp}&#8451;
             </div>
         );
     }
