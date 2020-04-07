@@ -1,18 +1,19 @@
 {
   "name": "thermocontrol",
-  "version": "0.1.0",
-  "description": "Controller for arduino thermostat",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
+  "version": "1.0.0",
+  "description": "Thermostat controller",
+  "main": "app.js",
   "author": "Peter Johnson",
   "license": "BSD-3-Clause",
+  "scripts": {
+    "start": "webpack --config config/webpack.config.js && node app.js"
+  },
   "dependencies": {
-    "express": "^4.16.2",
-    "serialport": "^6.0.4",
-    "socket.io": "^2.0.4"
+    "@hapi/boom": "^9.1.0",
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/inert": "^6.0.1",
+    "serialport": "^8.0.7",
+    "socket.io": "^2.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
@@ -24,7 +25,7 @@
     "react-bootstrap": "^0.32.0",
     "react-dom": "^16.2.0",
     "redux": "^3.7.2",
-    "socket.io-client": "^2.0.4",
+    "socket.io-client": "^2.3.0",
     "style-loader": "^0.19.1",
     "webpack": "^3.10.0"
   }

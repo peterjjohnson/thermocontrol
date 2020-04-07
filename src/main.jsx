@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 import {createStore} from 'redux';
 
 // Connect to the server so we can send/receive data
-const socket = io('http://192.168.1.110');
+const socket = io(`http://${process.env.HOST}:${process.env.WS_PORT}`);
 
 const prettyround = (x) => {
     return Math.round(x * 4) / 4;
@@ -18,6 +18,7 @@ const prettyround = (x) => {
 const tempInfoStore = (state = {}, action) => {
     switch (action.type) {
         case 'UPDATE_INFO':
+            console.log(action.tempInfo);
             // We've got updated temp info
             action.tempInfo.Temp = prettyround(action.tempInfo.Temp).toFixed(1);
             action.tempInfo.Humidity = prettyround(action.tempInfo.Humidity).toFixed(1);

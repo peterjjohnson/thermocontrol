@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = {
     entry: './src/main.jsx',
     output: { filename: './public/build/bundle.js' },
@@ -13,4 +15,10 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env.HOST': JSON.stringify(process.env.HOST),
+            'process.env.PORT': JSON.stringify(process.env.WS_PORT || 3001)
+        })
+    ]
 };
