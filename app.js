@@ -59,7 +59,7 @@ const setTemp = usb => temp => {
 
 async function runService () {
     try {
-        const host = process.env.HOST || '0.0.0.0';
+        const host = '0.0.0.0';
         const apiServer = Hapi.server({
             port: process.env.PORT || 3000,
             host,
