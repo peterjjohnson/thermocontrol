@@ -1,61 +1,6 @@
 const Hapi = require('@hapi/hapi');
-const SerialPort = require('serialport');
-const Readline = SerialPort.parsers.Readline;
-const port = process.env.SERIAL_PORT || '/dev/ttyUSB0';
 const SocketIo = require('socket.io');
-let sending = false;
-let lastReq;
-
-class State {
-    constructor (initialState) {
-        this.setState(initialState || {});
-    }
-    setState (newState) {
-        this.state = {
-          ...this.getState(),
-          ...newState,
-        };
-        this.emitState();
-    }
-    getState () {
-        return this.state;
-    }
-    subscribe (socket) {
-        this.socket = socket;
-    }
-    emitState () {
-        if (this.socket) {
-            this.socket.emit('temp_data', this.getState());
-        }
-    }
-}
-
-const serialHandler = (usb, state) => data => {
-    try {
-        if (data.trim() === 'HTU21D Found') {
-            console.log(data);
-        } else if (data.trim() === 'Unrecognized request' && lastReq) {
-            setTemp(usb)(lastReq);
-        }else {
-            state.setState(JSON.parse(data));
-        }
-    } catch (err) {
-        console.log(data);
-        console.error(err);
-    }
-}
-
-const setTemp = usb => temp => {
-    if (!sending) {
-        sending = true;
-        lastReq = temp;
-        usb.write(`;setTemp:${temp}`, () => {
-            usb.drain(() => {
-                sending = false;
-            });
-        });
-    }
-}
+const Thermostat = require('./lib/thermostat');
 
 async function runService () {
     try {
@@ -73,7 +18,13 @@ async function runService () {
             port: process.env.WS_PORT || 3001,
             host
         });
-        const state = new State();
+        const io = SocketIo(wsServer.listener);
+
+        Thermostat.subscribe(io.sockets);
+
+        io.on("connection", socket => {
+            socket.on('setTemp', Thermostat.setTemp);
+        });
         
         await apiServer.register(require('@hapi/inert'));
 
@@ -88,20 +39,11 @@ async function runService () {
             },
         });
 
-        const usb = new SerialPort(port);
-        const parser = usb.pipe(new Readline());
-        parser.on('data', serialHandler(usb, state));
-
-        const io = SocketIo(wsServer.listener,);
-        state.subscribe(io.sockets);
-        io.on("connection", socket => {
-            socket.on('setTemp', setTemp(usb));
-        });
-
         await apiServer.start();
         await wsServer.start();
 
-        console.info(`Server running at ${apiServer.info.uri}`);
+        console.info(`Web server running at ${apiServer.info.uri}:${apiServer.info.port}`);
+        console.info(`Socket server running at ${wsServer.info.uri}:${wsServer.info.port}`);
     } catch (err) {
         console.error(err);
         stopService(1);
